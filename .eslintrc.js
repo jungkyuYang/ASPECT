@@ -20,5 +20,9 @@ module.exports = {
     createDefaultProgram: true,
   },
   plugins: ['react', '@typescript-eslint', 'prettier'],
-  rules: {},
+  rules: {
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'warn',
+    'arrow-body-style': 'off',
+  },
 };
