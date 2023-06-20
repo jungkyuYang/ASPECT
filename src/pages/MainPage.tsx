@@ -1,35 +1,32 @@
-import React, { createContext, useReducer } from 'react';
+import React from 'react';
 
-const initialState = [
-  {
-    id: 1,
-    text: '프로젝트',
-  },
-];
-
-function reducer(state: any, action: any) {
-  switch (action.type) {
-    case 'addUser':
-      console.log(state);
-      return state;
-    default:
-      throw new Error(`정의되지 않은 액션 : ${action.type}`);
-  }
-}
+import { useAuthState, useAuthDispatch } from '../context/AuthContext';
 
 function MainPage() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const state = useAuthState();
+  const dispatch = useAuthDispatch();
+
+  const setCount = () =>
+    dispatch({ type: 'auth/createUser', email: 'hi', password: 'hi' }); // count 를 넣지 않으면 에러발생
+  const setText = () => dispatch({ type: 'SET_TEXT', text: 'bye' }); // text 를 넣지 않으면 에러 발생
+  console.log('테스트', state);
 
   return (
     <div>
-      <button
-        type="button"
-        onClick={() => {
-          dispatch({ type: 'addUser' });
-        }}
-      >
-        555
-      </button>
+      <p>
+        <code>count: </code>
+      </p>
+      <p>
+        <code>text: </code>
+      </p>
+      <div>
+        <button type="button" onClick={setCount}>
+          SET_COUNT
+        </button>
+        <button type="button" onClick={setText}>
+          SET_TEXT
+        </button>
+      </div>
     </div>
   );
 }

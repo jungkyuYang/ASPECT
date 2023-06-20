@@ -1,34 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { firebaseAuth } from '../Firebase';
 
 function SigninPage() {
-  const navigate = useNavigate();
-
   const [form, setForm] = useState({ email: '', password: '' });
   const [isValid, setIsValid] = useState({ isEmail: true, isPassword: true });
-
-  useEffect(() => {
-    if (localStorage.getItem('access_token')) {
-      return navigate('/app');
-    }
-    return undefined;
-  }, [navigate]);
+  const navigate = useNavigate();
 
   async function onSubmitHandler(e: React.FormEvent) {
     e.preventDefault();
-
-    fetch('https://jsonplaceholder.typicode.com/posts', {
-      method: 'POST',
-      body: JSON.stringify({
-        body: '테스트 중이무니다',
-      }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    })
-      .then((response) => response.json())
-      .then((json) => console.log(json));
-    console.log('hi');
+    try {
+      const response = await createUserWithEmailAndPassword(
+        firebaseAuth,
+        form.email,
+        form.password,
+      );
+      console.log(firebaseAuth);
+      navigate('/account');
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   function onChangeEmailHandler(e: React.ChangeEvent<HTMLInputElement>) {
